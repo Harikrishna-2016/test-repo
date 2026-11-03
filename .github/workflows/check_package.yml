@@ -17,3 +17,12 @@ jobs:
     uses: ./.github/workflows/get_package_info.yml
     with:
       package-name: ${{ inputs.package-name }}
+
+  check_docs:
+    if: ${{ needs.get_package_info.outputs.should-check-docs == 'true' }}
+    name: Check docs for ${{ inputs.package-name }}
+    needs: get_package_info
+    uses: ./.github/workflows/check_docs.yml
+    with:
+      package-name: ${{ inputs.package-name }}
+      package-basepath: ${{ github.workspace }}/${{ needs.get_package_info.outputs.package-basepath }}
