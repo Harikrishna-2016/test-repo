@@ -1,23 +1,12 @@
-
-
-
-#######################
-NI nisyscfg Docs
-#######################
-
-.. include:: intro.inc
-
-Table of Contents
-=================
-
+Nisyscfg Python API
+===================
 .. toctree::
-   :maxdepth: 4
+   :maxdepth: 3
 
    autoapi/index
 
-Indices and tables
-==================
 
-* :ref:`genindex`
+Indices and tables
+------------------
 * :ref:`modindex`
 * :ref:`search`

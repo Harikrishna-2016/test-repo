@@ -1,6 +1,5 @@
 """Sphinx Configuration File."""
 
-import datetime
 import pathlib
 
 import autoapi.extension
@@ -25,10 +24,7 @@ proj_config = toml.loads(pyproj_file.read_text())
 
 project = proj_config["project"]["name"]
 company = "National Instruments"
-# TODO: Display a range of years starting with the first year the project was published.
-copyright = f"2026-%Y, {company}"
-if datetime.datetime.now().year == 2026:
-    copyright = f"%Y, {company}"
+copyright = f"2020-%Y, {company}"
 
 
 # The version info for the project you're documenting, acts as replacement for
@@ -46,11 +42,26 @@ htmlhelp_basename = f"{project}doc"
 # tell autoapi to doc the public options
 autoapi_options = list(autoapi.extension._DEFAULT_OPTIONS)
 autoapi_options.remove("private-members")  # note: remove this to include "_" members in docs
-autoapi_dirs = [
-    root_path / "src" / "nisyscfg",
-]
+autoapi_dirs = [root_path / "src" / "nisyscfg"]
 autoapi_type = "python"
 autodoc_typehints = "description"
+
+
+# TODO: https://github.com/ni/nitypes-python/issues/16 - Update nitypes-python docs to use
+# :canonical: to resolve aliases (once supported by sphinx-autoapi)
+def skip_aliases(app, what, name, obj, skip, options):
+    """Skip documentation for classes that are exported from multiple modules."""
+    # For names that are defined in a private sub-module and aliased into a
+    # public package, hide the definition.
+    if name.startswith("hightime._"):
+        skip = True
+
+    return skip
+
+
+def setup(sphinx):
+    """Sphinx setup callback."""
+    sphinx.connect("autoapi-skip-member", skip_aliases)
 
 
 # List of patterns, relative to source directory, that match files and
@@ -58,9 +69,9 @@ autodoc_typehints = "description"
 # This patterns also effect to html_static_path and html_extra_path
 exclude_patterns = ["_build", "Thumbs.db", ".DS_Store"]
 
+
 intersphinx_mapping = {
     "python": ("https://docs.python.org/3", None),
-    # TODO: add intersphinx mappings for any other dependencies
 }
 
 
