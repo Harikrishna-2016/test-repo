@@ -28,7 +28,7 @@ classifiers = [
 ]
 [project.urls]
 repository = "https://github.com/ni/nisyscfg-python"
-documentation = "https://nisyscfg.readthedocs.io/"
+documentation = "https://nisyscfg-test.readthedocs.io/"
 changelog = "https://github.com/ni/nisyscfg-python/blob/main/CHANGELOG.md"
 
 [build-system]
