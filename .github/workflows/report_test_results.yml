@@ -3,7 +3,7 @@ name: Report test results
 # Runs in the base repo's context with a write token, so it can post PR
 # comments and check runs even for PRs opened from forks.
 # SECURITY: never check out or execute PR code in this workflow.
-on:
+on: # zizmor: ignore[dangerous-triggers] -- no checkout; artifacts treated as data only
   workflow_run:
     workflows: ["PR", "CI"]
     types: [completed]
