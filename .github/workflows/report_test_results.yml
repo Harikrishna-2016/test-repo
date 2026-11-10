@@ -7,7 +7,6 @@ on: # zizmor: ignore[dangerous-triggers] -- no checkout; artifacts treated as da
   workflow_run:
     workflows: ["PR", "CI"]
     types: [completed]
-  workflow_dispatch:
 
 permissions: {}
 
@@ -15,7 +14,9 @@ jobs:
   report_test_results:
     name: Report test results
     runs-on: ubuntu-latest
-    if: github.event.workflow_run.conclusion != 'skipped'
+    if: >-
+      github.event.workflow_run.conclusion != 'skipped' &&
+      github.event.workflow_run.conclusion != 'cancelled'
     permissions:
       checks: write
       pull-requests: write
