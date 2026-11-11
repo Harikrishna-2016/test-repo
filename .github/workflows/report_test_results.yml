@@ -37,4 +37,6 @@ jobs:
           event_file: artifacts/event_file/event.json
           event_name: ${{ github.event.workflow_run.event }}
           files: "artifacts/**/*.xml"
+          checks: "Test-Results"
+          comment_title: "pull request comment"
           comment_mode: always
