@@ -5,7 +5,7 @@ name: Report test results
 # SECURITY: never check out or execute PR code in this workflow.
 on: # zizmor: ignore[dangerous-triggers] -- no checkout; artifacts treated as data only
   workflow_run:
-    workflows: ["PR", "CI"]
+    workflows: ["PR"]
     types: [completed]
 
 permissions: {}
@@ -14,9 +14,7 @@ jobs:
   report_test_results:
     name: Report test results
     runs-on: ubuntu-latest
-    if: >-
-      github.event.workflow_run.conclusion != 'skipped' &&
-      github.event.workflow_run.conclusion != 'cancelled'
+    if: github.event.workflow_run.conclusion == 'success' || github.event.workflow_run.conclusion == 'failure'
     permissions:
       checks: write
       pull-requests: write
@@ -38,4 +36,7 @@ jobs:
           commit: ${{ github.event.workflow_run.head_sha }}
           event_file: artifacts/event_file/event.json
           event_name: ${{ github.event.workflow_run.event }}
-          files: "artifacts/test_results_*/**/*.xml"
+          files: "artifacts/**/*.xml"
+          checks: "Report-Test-Results"
+          comment_title: "pull request comment"
+          comment_mode: ${{ (github.event.workflow_run.event == 'pull_request' || github.event_name == 'pull_request') && 'always' || 'off' }}
